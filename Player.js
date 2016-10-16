@@ -15,7 +15,7 @@ class Player
       }
       else  //there is something ahead of us
       {
-        warrior.attack();
+        takeAction(somethingIsAhead(warrior), warrior);
       }
     }
     else //we are not being attacked
@@ -29,7 +29,7 @@ class Player
         }
         else  //something is ahead of us
         {
-          warrior.attack();
+          takeAction(somethingIsAhead(warrior), warrior);
         }
       }
       else //we have a high enough health to carry on
@@ -40,10 +40,44 @@ class Player
         }
         else  //something is ahead of us
         {
-          warrior.attack();
+          takeAction(somethingIsAhead(warrior), warrior);
         }
       }
     }
     this.CurrentHealth = warrior.health();
   }
+
+  
 }
+function somethingIsAhead(warrior)
+{
+  if (warrior.feel().isCaptive())
+  {
+    var whatIsIt =  AHEAD.CAPTIVE;
+  }
+  else 
+  {
+    var whatIsIt =  AHEAD.MINION;
+  }
+  return whatIsIt;
+}
+
+function takeAction(whatIsIt, warrior)
+{
+  switch (whatIsIt)
+  {
+    case AHEAD.CAPTIVE:
+      warrior.rescue();
+      break;
+    case AHEAD.MINION:
+      warrior.attack();
+      break;
+  }
+}
+
+var AHEAD = 
+{
+  CAPTIVE : {name: "Captive", code: "C"},
+  MINION  : {name: "Minion", code: "M"}
+};
+
